@@ -51,3 +51,8 @@ node_modules
 ios/
 android/
 *.keystore
+node_modules
+.env
+ios/
+android/
+*.keystore
