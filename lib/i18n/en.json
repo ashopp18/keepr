@@ -1,0 +1,63 @@
+{
+  "brand": "Keepr",
+  "tabs": {
+    "home": "Home",
+    "progress": "Progress",
+    "treatments": "Treatments",
+    "settings": "Settings"
+  },
+  "welcome": {
+    "title": "Welcome to Keepr",
+    "subtitle": "Build a simple, steady hair routine."
+  },
+  "cta": { "getStarted": "Get started" },
+  "home": {
+    "today": "Today",
+    "subtitle": "Small steps, big changes.",
+    "todayList": "Today's list",
+    "streak": "Streak"
+  },
+  "progress": {
+    "title": "Progress",
+    "subtitle": "Your photo timeline will live here.",
+    "comingSoon": "Coming soon",
+    "comingSoonDesc": "We'll add comparisons, streaks and photo-based metrics."
+  },
+  "treatments": {
+    "title": "Treatments",
+    "subtitle": "Configure your treatments, dosage and reminders.",
+    "next": "What do you want to add first?",
+    "nextDesc": "Minoxidil, finasteride, supplements… You'll see them on Home to check them daily.",
+    "list": "Your treatments",
+    "time": "Time",
+    "dose": "Dose",
+    "reminder": "Reminder",
+    "reminderTag": "Reminder",
+    "pickFromList": "Pick from list",
+    "placeholderName": "Name",
+    "orWriteYours": "or write your own",
+    "writeName": "Write a name",
+    "hhmm": "Hour (HH)   Min (mm)",
+    "amount": "Amount",
+    "unit": "Unit",
+    "add": "Add",
+    "hint": "Pick a name (from the list or write your own) and a time.",
+    "current": "Your treatments",
+    "form": {
+      "title": "Add treatment",
+      "name": "Name",
+      "time": "Time (HH:mm)",
+      "dose": "Dose (optional)",
+      "reminder": "Reminder",
+      "add": "Add",
+      "nameRequired": "Name is required",
+      "timeInvalid": "Time must be HH:mm (e.g. 08:00)"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "about": "About",
+    "aboutText": "Keepr helps you build a simple, consistent hair routine."
+  }
+}

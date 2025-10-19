@@ -1,0 +1,63 @@
+{
+  "brand": "Keepr",
+  "tabs": {
+    "home": "Inicio",
+    "progress": "Progreso",
+    "treatments": "Tratamientos",
+    "settings": "Ajustes"
+  },
+  "welcome": {
+    "title": "Bienvenido a Keepr",
+    "subtitle": "Construye una rutina capilar simple y constante."
+  },
+  "cta": { "getStarted": "Empezar" },
+  "home": {
+    "today": "Hoy",
+    "subtitle": "Pequeños pasos, grandes cambios.",
+    "todayList": "Lista de hoy",
+    "streak": "Racha"
+  },
+  "progress": {
+    "title": "Progreso",
+    "subtitle": "Tu línea de tiempo de fotos vivirá aquí.",
+    "comingSoon": "Próximamente",
+    "comingSoonDesc": "Añadiremos comparativas, rachas y métricas con fotos."
+  },
+  "treatments": {
+    "title": "Tratamientos",
+    "subtitle": "Configura tus tratamientos, dosis y recordatorios.",
+    "next": "¿Qué quieres añadir primero?",
+    "nextDesc": "Minoxidil, finasterida, suplementos… Lo verás en Inicio para marcarlo cada día.",
+    "list": "Tus tratamientos",
+    "time": "Hora",
+    "dose": "Dosis",
+    "reminder": "Recordatorio",
+    "reminderTag": "Recordatorio",
+    "pickFromList": "Elegir desde lista",
+    "placeholderName": "Nombre",
+    "orWriteYours": "o añade el tuyo",
+    "writeName": "Escribe un nombre",
+    "hhmm": "Hora (HH)   Min (mm)",
+    "amount": "Cantidad",
+    "unit": "Unidad",
+    "add": "Añadir",
+    "hint": "Elige un nombre (de la lista o escribe el tuyo) y una hora.",
+    "current": "Tus tratamientos",
+    "form": {
+      "title": "Añadir tratamiento",
+      "name": "Nombre",
+      "time": "Hora (HH:mm)",
+      "dose": "Dosis (opcional)",
+      "reminder": "Recordatorio",
+      "add": "Añadir",
+      "nameRequired": "El nombre es obligatorio",
+      "timeInvalid": "La hora debe ser HH:mm (ej. 08:00)"
+    }
+  },
+  "settings": {
+    "title": "Ajustes",
+    "language": "Idioma",
+    "about": "Acerca de",
+    "aboutText": "Keepr te ayuda a crear una rutina capilar simple y constante."
+  }
+}

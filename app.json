@@ -6,6 +6,10 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "keepr",
+    "extra": {
+      "supabaseUrl": "https://snzmvlgrxqenuzfhipji.supabase.co",
+      "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuem12bGdyeHFlbnV6ZmhpcGppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NjQxMDMsImV4cCI6MjA3NjM0MDEwM30.dT1W4WGr_DziZZHQX4uswnx2sKS_s0sSonZ4WnEgDcM"
+    },
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -38,7 +42,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,

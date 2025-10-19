@@ -1,17 +1,45 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "jsx": "react-native",
+    "target": "ES2020",
+    "lib": [
+      "ES2020"
+    ],
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@app/*": [
+        "app/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@theme": [
+        "lib/theme.ts"
       ]
-    }
+    },
+    "types": [
+      "expo-router"
+    ]
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "_expo/types/**/*.ts",
+    ".expo/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
