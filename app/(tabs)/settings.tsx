@@ -1,45 +1,39 @@
 // app/(tabs)/settings.tsx
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, Linking } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Pressable,
+  ScrollView,
+} from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { Colors, spacing, Radii } from '@theme';
+import { Colors, spacing, Radii, shadow } from '@theme';
 import GlassCard from '@lib/ui/GlassCard';
 import VersionPill from '@lib/ui/VersionPill';
 import { useLocale, useT } from '@lib/LocaleProvider';
-import { supabase } from '@lib/auth/supabaseClient';     // 👈 ruta que ya confirmaste
-import { setAuthUser } from '@lib/store/linkAuth';        // 👈 ruta correcta
-
-function Row({
-  label,
-  right,
-  onPress,
-  danger,
-}: {
-  label: string;
-  right?: string;
-  onPress?: () => void;
-  danger?: boolean;
-}) {
-  return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7}>
-      <GlassCard style={[styles.row, danger && { borderColor: '#e36b6b', borderWidth: 1 }]}>
-        <Text style={[styles.rowText, danger && { color: '#e36b6b' }]}>{label}</Text>
-        {right ? <Text style={styles.right}>{right}</Text> : null}
-      </GlassCard>
-    </TouchableOpacity>
-  );
-}
+import { useAuth } from '@lib/auth/AuthProvider';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
-  const { locale, setLocale } = useLocale();
   const t = useT();
+  const { locale, setLocale } = useLocale();
+  const { signOut } = useAuth();
+  const router = useRouter();
 
-  const logout = async () => {
-    await supabase.auth.signOut();
-    await setAuthUser(null);
-    Alert.alert(t('settings.loggedOut', 'Sesión cerrada'));
+  const [langOpen, setLangOpen] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } finally {
+      // En tu repo esta es la ruta correcta
+      router.replace('/auth/signin');
+    }
   };
 
   return (
@@ -47,73 +41,238 @@ export default function SettingsScreen() {
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: spacing(2),
-          paddingBottom: insets.bottom + spacing(14),
+          paddingBottom: insets.bottom + spacing(24),
           gap: spacing(2),
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>{t('settings.title', 'Ajustes')}</Text>
+        {/* Título + subtítulo (igual patrón que Progress) */}
+        <Text style={styles.title}>{t('settings.title', 'Settings')}</Text>
+        <Text style={styles.subtitle}>
+          {t('settings.subtitle', 'Manage your account, language and subscription.')}
+        </Text>
 
         {/* Cuenta */}
-        <Text style={styles.sectionTitle}>{t('settings.account', 'Cuenta')}</Text>
-        <Row label={t('settings.user', 'Usuario')} right={t('settings.userEmail', 'Sesión iniciada')} />
-        <Row label={t('settings.subscription', 'Suscripción')} right={t('settings.manage', 'Gestionar')} onPress={() => Alert.alert('Soon')} />
-        <Row label={t('settings.logout', 'Cerrar sesión')} onPress={logout} />
+        <SectionTitle>{t('settings.account', 'Account')}</SectionTitle>
+        <GlassCard style={{ padding: spacing(2), gap: spacing(1) }}>
+          <Row
+            label={t('settings.manageSubscription', 'Manage subscription')}
+            hint={t('settings.manageSubscriptionHint', 'Plans, billing & receipts')}
+            right={<Chevron />}
+            onPress={() => {
+              // TODO: Abrir pantalla/submodal de suscripción (RevenueCat)
+            }}
+          />
+          <Separator />
+          <Row
+            label={t('settings.signOut', 'Sign out')}
+            destructive
+            right={<Ionicons name="log-out-outline" size={18} color="#fff" />}
+            onPress={handleLogout}
+          />
+        </GlassCard>
 
         {/* Preferencias */}
-        <Text style={styles.sectionTitle}>{t('settings.preferences', 'Preferencias')}</Text>
-        <Row
-          label={t('settings.language', 'Idioma')}
-          right={locale === 'es' ? 'Español' : 'English'}
-          onPress={() => setLocale(locale === 'es' ? 'en' : 'es')}
-        />
-        <Row label={t('settings.notifications', 'Notificaciones')} right={t('common.manage', 'Gestionar')} onPress={() => Alert.alert('Soon')} />
-
-        {/* Datos & privacidad */}
-        <Text style={styles.sectionTitle}>{t('settings.data', 'Datos y privacidad')}</Text>
-        <Row label={t('settings.export', 'Exportar datos')} onPress={() => Alert.alert(t('common.soon', 'Próximamente'))} />
-        <Row
-          danger
-          label={t('settings.deleteAll', 'Borrar todos los datos')}
-          onPress={() => Alert.alert(t('settings.confirmDelete', '¿Seguro?'), t('settings.cannotUndo', 'No se puede deshacer.'), [
-            { text: t('common.cancel', 'Cancelar') },
-            { text: t('common.delete', 'Eliminar'), style: 'destructive', onPress: () => Linking.openURL('app-settings:') },
-          ])}
-        />
+        <SectionTitle>{t('settings.preferences', 'Preferences')}</SectionTitle>
+        <GlassCard style={{ padding: spacing(2), gap: spacing(1) }}>
+          <Row
+            label={t('settings.language', 'Language')}
+            hint={locale === 'es' ? t('settings.spanish', 'Español') : t('settings.english', 'English')}
+            right={<Chevron />}
+            onPress={() => setLangOpen(true)}
+          />
+          <Separator />
+          <Row
+            label={t('settings.notifications', 'Notifications')}
+            hint={t('settings.notificationsHint', 'Reminders & alerts')}
+            right={<Chevron />}
+            onPress={() => {
+              // TODO: Pantalla de notificaciones (permiso + configuración)
+            }}
+          />
+          <Separator />
+          <Row
+            label={t('settings.privacy', 'Privacy')}
+            hint={t('settings.privacyHint', 'Data & backups')}
+            right={<Chevron />}
+            onPress={() => {
+              // TODO: Pantalla de privacidad/exportar datos
+            }}
+          />
+        </GlassCard>
 
         {/* Acerca de */}
-        <Text style={styles.sectionTitle}>{t('settings.about', 'Acerca de')}</Text>
-        <Row label={t('settings.rate', 'Valorar la app')} onPress={() => Alert.alert('Store')} />
-        <Row label={t('settings.contact', 'Contactar por email')} onPress={() => Linking.openURL('mailto:hello@example.com')} />
+        <SectionTitle>{t('settings.about', 'About')}</SectionTitle>
+        <GlassCard style={{ padding: spacing(2) }}>
+          <Text style={styles.muted}>
+            {t(
+              'settings.aboutText',
+              'Keepr helps you build a simple, consistent hair routine.'
+            )}
+          </Text>
+        </GlassCard>
 
-        <View style={{ alignItems: 'center', marginTop: spacing(4) }}>
+        {/* Footer versión: mismo patrón que Progress */}
+        <View style={{ alignItems: 'center', marginTop: spacing(6) }}>
           <VersionPill text="Keepr • v0.1" />
         </View>
       </ScrollView>
+
+      {/* Bottom sheet: selector de idioma */}
+      <LangSheet
+        visible={langOpen}
+        current={locale}
+        onPick={(lng) => {
+          setLocale(lng);
+          setLangOpen(false);
+        }}
+        onClose={() => setLangOpen(false)}
+      />
     </SafeAreaView>
   );
 }
 
+/* ---------- UI helpers ---------- */
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return <Text style={styles.sectionTitle}>{children}</Text>;
+}
+
+function Chevron() {
+  return <Ionicons name="chevron-forward" size={18} color={Colors.muted} />;
+}
+
+function Row({
+  label,
+  hint,
+  right,
+  onPress,
+  destructive,
+}: {
+  label: string;
+  hint?: string;
+  right?: React.ReactNode;
+  onPress?: () => void;
+  destructive?: boolean;
+}) {
+  return (
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.row}>
+      <View style={{ flex: 1 }}>
+        <Text style={[styles.rowLabel, destructive && styles.rowLabelDestructive]}>{label}</Text>
+        {!!hint && <Text style={styles.rowHint}>{hint}</Text>}
+      </View>
+      {!!right && <View style={styles.rowRight}>{right}</View>}
+    </TouchableOpacity>
+  );
+}
+
+function Separator() {
+  return <View style={styles.sep} />;
+}
+
+function LangSheet({
+  visible,
+  current,
+  onPick,
+  onClose,
+}: {
+  visible: boolean;
+  current: 'es' | 'en';
+  onPick: (l: 'es' | 'en') => void;
+  onClose: () => void;
+}) {
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      <Pressable style={styles.sheetBackdrop} onPress={onClose} />
+      <View style={styles.sheet}>
+        <Text style={styles.sheetTitle}>Language</Text>
+        <SheetRow
+          label="English"
+          active={current === 'en'}
+          onPress={() => onPick('en')}
+        />
+        <SheetRow
+          label="Español"
+          active={current === 'es'}
+          onPress={() => onPick('es')}
+        />
+      </View>
+    </Modal>
+  );
+}
+
+function SheetRow({
+  label,
+  active,
+  onPress,
+}: {
+  label: string;
+  active?: boolean;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable onPress={onPress} style={[styles.sheetRow, active && styles.sheetRowActive]}>
+      <Text style={[styles.sheetRowText, active && styles.sheetRowTextActive]}>{label}</Text>
+      {active ? <Ionicons name="checkmark" size={18} color={Colors.accent} /> : null}
+    </Pressable>
+  );
+}
+
+/* ---------- styles ---------- */
+
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg },
+
+  // Igual que Progress: título y subtítulo suaves
   title: { fontSize: 32, fontWeight: '800', color: Colors.text, marginTop: spacing(2) },
+  subtitle: { color: Colors.muted, marginTop: spacing(1), fontSize: 16 },
 
   sectionTitle: {
     marginTop: spacing(2),
-    fontSize: 14,
+    marginBottom: spacing(1),
+    fontSize: 18,
     fontWeight: '700',
-    color: Colors.muted,
-    textTransform: 'uppercase',
-    letterSpacing: 0.6,
+    color: Colors.text,
   },
-  row: {
-    paddingHorizontal: spacing(2),
-    paddingVertical: spacing(2),
-    borderRadius: Radii.md,
+
+  row: { flexDirection: 'row', alignItems: 'center', paddingVertical: spacing(1.25) },
+  rowLabel: { color: Colors.text, fontSize: 16, fontWeight: '700' },
+  rowLabelDestructive: { color: '#e36b6b' },
+  rowHint: { color: Colors.muted, marginTop: 2, fontSize: 13 },
+  rowRight: { marginLeft: spacing(1.5) },
+
+  muted: { color: Colors.muted },
+
+  sep: {
+    height: 1,
+    backgroundColor: Colors.border,
+    opacity: 0.6,
+    marginVertical: spacing(0.75),
+  },
+
+  // Sheet
+  sheetBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.25)',
+  },
+  sheet: {
+    position: 'absolute',
+    left: 0, right: 0, bottom: 0,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: spacing(2),
+  },
+  sheetTitle: { fontSize: 18, fontWeight: '800', color: Colors.text, marginBottom: spacing(1) },
+  sheetRow: {
+    paddingVertical: spacing(1.25),
+    paddingHorizontal: spacing(1),
+    borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  rowText: { color: Colors.text, fontSize: 16, fontWeight: '600' },
-  right: { color: Colors.muted, fontWeight: '600' },
+  sheetRowActive: { backgroundColor: 'rgba(0,0,0,0.04)' },
+  sheetRowText: { fontSize: 16, color: Colors.text },
+  sheetRowTextActive: { color: Colors.accent, fontWeight: '700' },
 });

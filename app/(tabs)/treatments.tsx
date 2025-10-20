@@ -103,7 +103,7 @@ export default function TreatmentsScreen() {
     setReminder(false);
   };
 
-  // Estados de deshabilitado en UI (exclusividad)
+  // Exclusividad visual: si escribes manual, no eliges de lista; si eliges de lista, no escribes manual.
   const presetDisabled = customName.trim().length > 0;
   const customDisabled = selectedPreset.trim().length > 0;
 
@@ -113,110 +113,114 @@ export default function TreatmentsScreen() {
         contentContainerStyle={{
           paddingHorizontal: spacing(2),
           paddingBottom: insets.bottom + spacing(24),
+          gap: spacing(2),
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Text style={styles.title}>{t('treatments.title', 'Tratamientos')}</Text>
+        {/* Título y subtítulo, con aire */}
+        <Text style={styles.title}>{t('treatments.title', 'Treatments')}</Text>
         <Text style={styles.subtitle}>
-          {t('treatments.subtitle', 'Configura tus tratamientos, dosis y recordatorios.')}
+          {t('treatments.subtitle', 'Configure your treatments, dosage and reminders.')}
         </Text>
 
-        {/* Elegir desde lista */}
-        <GlassCard style={[styles.block, styles.mbLg]}>
-          <Text style={styles.blockTitle}>{t('treatments.pickFromList', 'Elegir desde lista')}</Text>
-          <Text style={styles.label}>{t('treatments.name', 'Nombre')}</Text>
+        {/* BLOQUE: Elegir nombre */}
+        <GlassCard style={[styles.cardBlock]}>
+          <SectionHeader label={t('treatments.pickFromList', 'Choose from list')} />
 
+          <FieldLabel text={t('treatments.name', 'Name')} />
           <TouchableOpacity
             onPress={() => !presetDisabled && setPresetOpen(true)}
             activeOpacity={presetDisabled ? 1 : 0.8}
             style={{ opacity: presetDisabled ? 0.5 : 1 }}
           >
-            <GlassCard style={styles.fieldPill}>
+            <GlassPill>
               <Text style={styles.inputText}>
-                {selectedPreset || t('treatments.placeholderName', 'Nombre')}
+                {selectedPreset || t('treatments.placeholderName', 'Name')}
               </Text>
-            </GlassCard>
+            </GlassPill>
           </TouchableOpacity>
 
-          {/* o añade el tuyo */}
-          <Text style={[styles.blockTitle, { marginTop: spacing(2) }]}>
-            {t('treatments.orWriteYours', 'o añade el tuyo')}
-          </Text>
-          <Text style={styles.label}>{t('treatments.name', 'Nombre')}</Text>
+          <Divider />
+
+          <SectionHeader label={t('treatments.orWriteYours', 'or write your own')} />
+          <FieldLabel text={t('treatments.name', 'Name')} />
           <View style={{ opacity: customDisabled ? 0.5 : 1 }}>
             <TextField
-              placeholder={t('treatments.writeName', 'Escribe un nombre')}
+              placeholder={t('treatments.writeName', 'Type a name')}
               value={customName}
               onChange={(v) => !customDisabled && setCustomName(v)}
             />
           </View>
         </GlassCard>
 
-        {/* Hora */}
-        <GlassCard style={[styles.block, styles.mbLg]}>
-          <Text style={styles.blockTitle}>{t('treatments.time', 'Hora')}</Text>
-          <Text style={styles.label}>{t('treatments.hhmm', 'Hora (HH)   Min (mm)')}</Text>
+        {/* BLOQUE: Hora */}
+        <GlassCard style={styles.cardBlock}>
+          <SectionHeader label={t('treatments.time', 'Time')} />
+          <FieldLabel text={t('treatments.hhmm', 'Hour (HH)   Min (mm)')} />
 
           <View style={{ flexDirection: 'row', gap: spacing(1.5) }}>
             <TouchableOpacity onPress={() => setHourOpen(true)} activeOpacity={0.8} style={{ flex: 1 }}>
-              <GlassCard style={[styles.pill]}>
+              <GlassPill>
                 <Text style={styles.inputText}>{hour}</Text>
-              </GlassCard>
+              </GlassPill>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => setMinOpen(true)} activeOpacity={0.8} style={{ flex: 1 }}>
-              <GlassCard style={[styles.pill]}>
+              <GlassPill>
                 <Text style={styles.inputText}>{min}</Text>
-              </GlassCard>
+              </GlassPill>
             </TouchableOpacity>
           </View>
         </GlassCard>
 
-        {/* Dosis */}
-        <GlassCard style={[styles.block, styles.mbLg]}>
-          <Text style={styles.blockTitle}>{t('treatments.dose', 'Dosis')}</Text>
+        {/* BLOQUE: Dosis */}
+        <GlassCard style={styles.cardBlock}>
+          <SectionHeader label={t('treatments.dose', 'Dose')} />
 
-          <Text style={styles.label}>{t('treatments.amount', 'Cantidad')}</Text>
+          <FieldLabel text={t('treatments.amount', 'Amount')} />
           <TouchableOpacity onPress={() => setQtyOpen(true)} activeOpacity={0.8} style={{ alignSelf: 'flex-start' }}>
-            <GlassCard style={[styles.pill, { minWidth: 110 }]}>
+            <GlassPill minWidth={120}>
               <Text style={styles.inputText}>{qty}</Text>
-            </GlassCard>
+            </GlassPill>
           </TouchableOpacity>
 
-          <Text style={[styles.label, { marginTop: spacing(1.5) }]}>{t('treatments.unit', 'Unidad')}</Text>
+          <FieldLabel text={t('treatments.unit', 'Unit')} extraTop />
           <TouchableOpacity onPress={() => setUnitOpen(true)} activeOpacity={0.8} style={{ alignSelf: 'flex-start' }}>
-            <GlassCard style={[styles.pill, { minWidth: 110 }]}>
+            <GlassPill minWidth={120}>
               <Text style={styles.inputText}>{unit || '—'}</Text>
-            </GlassCard>
+            </GlassPill>
           </TouchableOpacity>
         </GlassCard>
 
-        {/* Recordatorio */}
-        <GlassCard style={[styles.block, styles.mbLg]}>
-          <SwitchRow
-            label={t('treatments.reminder', 'Recordatorio')}
-            value={reminder}
-            onValueChange={setReminder}
-          />
+        {/* BLOQUE: Recordatorio */}
+        <GlassCard style={styles.cardBlock}>
+          <SectionHeader label={t('treatments.reminder', 'Reminder')} />
+          <View style={{ marginTop: spacing(0.5) }}>
+            <SwitchRow
+              label={t('treatments.reminder', 'Reminder')}
+              value={reminder}
+              onValueChange={setReminder}
+            />
+          </View>
         </GlassCard>
 
-        {/* CTA + Nota */}
+        {/* CTA + Nota (aire y simetría) */}
         <TouchableOpacity
           disabled={!canAdd}
           onPress={onAdd}
           activeOpacity={0.9}
           style={[styles.primaryBtn, !canAdd && { opacity: 0.5 }]}
         >
-          <Text style={styles.primaryBtnText}>{t('treatments.add', 'Añadir')}</Text>
+          <Text style={styles.primaryBtnText}>{t('treatments.add', 'Add')}</Text>
         </TouchableOpacity>
 
-        <Text style={styles.hintText}>
-          {t('treatments.hint', 'Elige un nombre (de la lista o escribe el tuyo) y una hora.')}
+        <Text style={styles.hint}>
+          {t('treatments.hint', 'Choose a name (from the list or write yours) and a time.')}
         </Text>
 
         {/* Lista actual */}
-        <Text style={[styles.blockTitle, { marginTop: spacing(4), marginBottom: spacing(1) }]}>
-          {t('treatments.current', 'Tus tratamientos')}
+        <Text style={[styles.listTitle]}>
+          {t('treatments.current', 'Your treatments')}
         </Text>
 
         <View style={{ gap: spacing(1.25) }}>
@@ -233,7 +237,7 @@ export default function TreatmentsScreen() {
                 <Text style={styles.trMeta}>
                   {tr.time}
                   {tr.dose ? `  •  ${doseToString(tr.dose)}` : ''}
-                  {tr.reminder ? `  •  ${t('treatments.reminderTag', 'Recordatorio')}` : ''}
+                  {tr.reminder ? `  •  ${t('treatments.reminder', 'Reminder')}` : ''}
                 </Text>
               </View>
 
@@ -248,13 +252,14 @@ export default function TreatmentsScreen() {
           ))}
         </View>
 
+        {/* Footer versión uniforme */}
         <View style={{ alignItems: 'center', marginTop: spacing(6) }}>
           <VersionPill text="Keepr • v0.1" />
         </View>
       </ScrollView>
 
       {/* Sheets */}
-      <BottomSheet visible={presetOpen} title={t('treatments.pickFromList', 'Elegir desde lista')} onClose={() => setPresetOpen(false)}>
+      <BottomSheet visible={presetOpen} title={t('treatments.pickFromList', 'Choose from list')} onClose={() => setPresetOpen(false)}>
         {PRESETS.map(opt => (
           <SheetRow
             key={opt.key + opt.label}
@@ -268,25 +273,25 @@ export default function TreatmentsScreen() {
         ))}
       </BottomSheet>
 
-      <BottomSheet visible={hourOpen} title={t('treatments.hour', 'Hora')} onClose={() => setHourOpen(false)}>
+      <BottomSheet visible={hourOpen} title={t('treatments.hour', 'Hour')} onClose={() => setHourOpen(false)}>
         {HOURS.map(h => (
           <SheetRow key={h} label={h} onPress={() => { setHour(h); setHourOpen(false); }} />
         ))}
       </BottomSheet>
 
-      <BottomSheet visible={minOpen} title={t('treatments.minute', 'Minuto')} onClose={() => setMinOpen(false)}>
+      <BottomSheet visible={minOpen} title={t('treatments.minute', 'Minute')} onClose={() => setMinOpen(false)}>
         {MINS.map(m => (
           <SheetRow key={m} label={m} onPress={() => { setMin(m); setMinOpen(false); }} />
         ))}
       </BottomSheet>
 
-      <BottomSheet visible={qtyOpen} title={t('treatments.amount', 'Cantidad')} onClose={() => setQtyOpen(false)}>
+      <BottomSheet visible={qtyOpen} title={t('treatments.amount', 'Amount')} onClose={() => setQtyOpen(false)}>
         {QTY_OPTIONS.map(v => (
           <SheetRow key={v} label={v} onPress={() => { setQty(v); setQtyOpen(false); }} />
         ))}
       </BottomSheet>
 
-      <BottomSheet visible={unitOpen} title={t('treatments.unit', 'Unidad')} onClose={() => setUnitOpen(false)}>
+      <BottomSheet visible={unitOpen} title={t('treatments.unit', 'Unit')} onClose={() => setUnitOpen(false)}>
         {UNITS.map(u => (
           <SheetRow key={u.key + u.label} label={u.label} onPress={() => { setUnit(u.key); setUnitOpen(false); }} />
         ))}
@@ -295,7 +300,32 @@ export default function TreatmentsScreen() {
   );
 }
 
-/* ---------- BottomSheet helpers ---------- */
+/* ---------- UI helpers locales ---------- */
+
+function SectionHeader({ label }: { label: string }) {
+  return <Text style={styles.sectionHeader}>{label}</Text>;
+}
+
+function FieldLabel({ text, extraTop }: { text: string; extraTop?: boolean }) {
+  return (
+    <Text style={[styles.fieldLabel, extraTop && { marginTop: spacing(1.25) }]}>
+      {text}
+    </Text>
+  );
+}
+
+function Divider() {
+  return <View style={styles.divider} />;
+}
+
+function GlassPill({ children, minWidth }: { children: React.ReactNode; minWidth?: number }) {
+  return (
+    <View style={[styles.pill, minWidth ? { minWidth } : null]}>
+      {children}
+    </View>
+  );
+}
+
 function BottomSheet({
   visible,
   title,
@@ -326,33 +356,51 @@ function SheetRow({ label, onPress }: { label: string; onPress: () => void }) {
   );
 }
 
-/* ---------- styles ---------- */
+/* ---------- estilos ---------- */
+
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: Colors.bg },
+
+  // cabecera
   title: { fontSize: 28, fontWeight: '800', color: Colors.text, marginTop: spacing(2) },
-  subtitle: { color: Colors.muted, marginTop: spacing(1.5), marginBottom: spacing(2), fontSize: 15 },
+  subtitle: { color: Colors.muted, marginTop: spacing(1), marginBottom: spacing(1), fontSize: 15 },
 
-  block: { padding: spacing(1.5) },
-  mbLg: { marginBottom: spacing(2.5) },
+  // bloques
+  cardBlock: { padding: spacing(2), gap: spacing(1.25) },
 
-  blockTitle: { fontSize: 17, fontWeight: '700', color: Colors.text, marginBottom: spacing(1) },
-  label: { color: Colors.muted, marginBottom: spacing(1) },
-
-  fieldPill: {
-    borderRadius: Radii.xl,
-    paddingHorizontal: spacing(2),
-    paddingVertical: spacing(1.25),
+  sectionHeader: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: Colors.text,
+    marginBottom: spacing(0.5),
   },
-  inputText: { color: Colors.muted, fontSize: 15, fontWeight: '600' },
+
+  fieldLabel: {
+    color: Colors.muted,
+    marginTop: spacing(0.5),
+    marginBottom: spacing(0.75),
+  },
+
+  divider: {
+    height: 1,
+    backgroundColor: Colors.border,
+    opacity: 0.6,
+    marginVertical: spacing(1),
+  },
 
   pill: {
     borderRadius: Radii.xl,
     paddingHorizontal: spacing(2),
     paddingVertical: spacing(1.25),
+    backgroundColor: Colors.glassBg,
+    borderWidth: 1,
+    borderColor: Colors.glassBorder,
+    ...shadow(4),
   },
+  inputText: { color: Colors.muted, fontSize: 15, fontWeight: '600' },
 
   primaryBtn: {
-    marginTop: spacing(2.5),
+    marginTop: spacing(2),
     backgroundColor: Colors.accent,
     paddingVertical: spacing(1.75),
     borderRadius: Radii.lg,
@@ -361,13 +409,27 @@ const styles = StyleSheet.create({
   },
   primaryBtnText: { color: Colors.textOnAccent, fontWeight: '800', fontSize: 15 },
 
-  hintText: { color: Colors.muted, marginTop: spacing(1.5) },
+  hint: { color: Colors.muted, marginTop: spacing(1.25) },
+
+  // lista
+  listTitle: {
+    marginTop: spacing(3),
+    marginBottom: spacing(1),
+    fontSize: 17,
+    fontWeight: '700',
+    color: Colors.text,
+  },
 
   trCard: { padding: spacing(1.25) },
-  trInner: { flexDirection: 'row', alignItems: 'center', gap: spacing(1.25) },
+  trInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing(1),
+  },
   trTextCol: { flex: 1, minWidth: 0 },
   trName: { color: Colors.text, fontWeight: '700', fontSize: 15 },
   trMeta: { color: Colors.muted, marginTop: 2, fontSize: 14 },
+
   deleteBtn: {
     width: 34,
     height: 34,
@@ -378,10 +440,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
 
-  sheetBackdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.25)' },
+  // sheets
+  sheetBackdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.25)',
+  },
   sheet: {
-    position: 'absolute', left: 0, right: 0, bottom: 0,
-    backgroundColor: '#fff', borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: spacing(2),
+    position: 'absolute',
+    left: 0, right: 0, bottom: 0,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: spacing(2),
   },
   sheetTitle: { fontSize: 18, fontWeight: '800', color: Colors.text },
   sheetRow: { paddingVertical: spacing(1.25), paddingHorizontal: spacing(1), borderRadius: 12 },

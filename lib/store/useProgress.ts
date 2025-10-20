@@ -84,16 +84,3 @@ export const useProgress = create<ProgressState>()(
   )
 );
 
-
-git init
-echo "node_modules
-.env
-ios/
-android/
-*.keystore" >> .gitignore
-
-git add .
-git commit -m "Initial"
-git branch -M main
-git remote add origin https://github.com/ashopp18/keepr.git
-git push -u origin main

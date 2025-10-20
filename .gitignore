@@ -56,3 +56,11 @@ node_modules
 ios/
 android/
 *.keystore
+
+# Local media / secrets
+*.mp4
+*.mov
+*.heic
+*.png
+*.jpg
+.env*

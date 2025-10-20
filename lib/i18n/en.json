@@ -11,18 +11,43 @@
     "subtitle": "Build a simple, steady hair routine."
   },
   "cta": { "getStarted": "Get started" },
+
   "home": {
     "today": "Today",
     "subtitle": "Small steps, big changes.",
     "todayList": "Today's list",
     "streak": "Streak"
   },
+
   "progress": {
     "title": "Progress",
     "subtitle": "Your photo timeline will live here.",
     "comingSoon": "Coming soon",
-    "comingSoonDesc": "We'll add comparisons, streaks and photo-based metrics."
+    "comingSoonDesc": "We'll add comparisons, streaks and photo-based metrics.",
+    "metrics": {
+    "title": "Metrics",
+    "streak": "Streak",
+    "today": "Today",
+    "adherence": "Adherence",
+    "disclaimer": "Daily adherence shown. We’ll add weekly/monthly adherence based on validated methods."
   },
+
+  "photos": {
+    "title": "Photo timeline",
+    "desc": "Add photos to visualize your progress over time.",
+    "add": "Add photo",
+    "view": "View timeline"
+  },
+  "checkin": {
+    "title": "Weekly check-in",
+    "desc": "Answer a short checklist once a week about side effects and how you feel.",
+    "start": "Start weekly check",
+    "note": "Available once per week to avoid bias."
+  }
+
+},
+
+
   "treatments": {
     "title": "Treatments",
     "subtitle": "Configure your treatments, dosage and reminders.",
@@ -31,33 +56,33 @@
     "list": "Your treatments",
     "time": "Time",
     "dose": "Dose",
-    "reminder": "Reminder",
-    "reminderTag": "Reminder",
     "pickFromList": "Pick from list",
+    "name": "Name",
     "placeholderName": "Name",
-    "orWriteYours": "or write your own",
-    "writeName": "Write a name",
+    "orWriteYours": "or write yours",
+    "writeName": "Type a name",
     "hhmm": "Hour (HH)   Min (mm)",
     "amount": "Amount",
     "unit": "Unit",
+    "reminder": "Reminder",
     "add": "Add",
-    "hint": "Pick a name (from the list or write your own) and a time.",
+    "hint": "Choose a name (from the list or write yours) and a time.",
     "current": "Your treatments",
-    "form": {
-      "title": "Add treatment",
-      "name": "Name",
-      "time": "Time (HH:mm)",
-      "dose": "Dose (optional)",
-      "reminder": "Reminder",
-      "add": "Add",
-      "nameRequired": "Name is required",
-      "timeInvalid": "Time must be HH:mm (e.g. 08:00)"
-    }
+    "hour": "Hour",
+    "minute": "Minute"
   },
+
   "settings": {
     "title": "Settings",
     "language": "Language",
     "about": "About",
-    "aboutText": "Keepr helps you build a simple, consistent hair routine."
+    "aboutText": "Keepr helps you build a simple, consistent hair routine.",
+    "subscription": "Subscription",
+    "subscriptionHint": "Connect your subscription to unlock advanced features (coming soon).",
+    "account": "Account",
+    "accountHint": "You are signed in.",
+    "signOut": "Sign out"
   }
+
 }
+  
